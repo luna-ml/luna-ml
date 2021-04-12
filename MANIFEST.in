@@ -1,1 +1,2 @@
-recursive-include package *
+recursive-include luna_ml *.yaml
+global-exclude *.py[cod]
