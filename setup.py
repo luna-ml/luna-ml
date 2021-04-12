@@ -5,7 +5,7 @@ with open("README.md", "r") as fh:
 
 setuptools.setup(
     name="luna-ml",
-    version="v0.1.9",
+    version="v0.2.0",
     license='Apache License 2.0',
     author="Staroid",
     author_email="moon@staroid.com",
