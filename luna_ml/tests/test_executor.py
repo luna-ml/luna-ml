@@ -2,6 +2,7 @@ import unittest
 import tempfile, os, io
 import shutil
 from datetime import datetime
+from kubernetes import config
 from task.executor import Executor
 from task.task import Task
 
@@ -9,6 +10,7 @@ class TestExecutor(unittest.TestCase):
     def setUp(self):
         self._tmpdir = tempfile.mkdtemp()
         self._exc = Executor(self._tmpdir)
+        config.load_kube_config()
 
     def tearDown(self):
         shutil.rmtree(self._tmpdir)

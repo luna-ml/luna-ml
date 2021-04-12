@@ -37,8 +37,6 @@ class Executor():
         self._namespace = namespace
         self._storage = LocalFsStorage(basePath)
 
-        config.load_kube_config()
-
     def evaluate(self, task):
         podName = f"luna-{task.id}"
         self._startTask(task)
