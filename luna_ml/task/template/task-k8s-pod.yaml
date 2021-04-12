@@ -1,0 +1,56 @@
+apiVersion: v1
+kind: Pod
+metadata:
+  name: luna-{{task.id}}
+  namespace: {{k8s.namespace}}
+spec:
+  initContainers:
+  - name: pre-task # executor_kubernetes.py finds this name. not a good idea to change
+    image: "python:3.6"
+    command:
+    - bash
+    - -c
+    - >-
+      {{k8s.setupCommand}};
+      while [ ! -f "/tmp/done" ]; do sleep 1; done
+    volumeMounts:
+    - mountPath: {{k8s.workspaceMount}}
+      name: workspace-volume
+{% for img in task.image %}
+  - name: task-{{loop.index}} # executor_kubernetes.py finds this name. not a good idea to change
+    image: "{{img}}"
+    {% if task.command[loop.index0] is not none %}
+    command: {{task.command[loop.index0]}}
+    {% endif %}
+    env:
+    {% for key, value in k8s.envs.items() %}
+    - name: "{{key}}"
+      value: "{{value}}"
+    {% endfor %}
+    workingDir: {{k8s.workspaceMount}}
+    volumeMounts:
+    - mountPath: {{k8s.workspaceMount}}
+      name: workspace-volume
+{% endfor %}
+  - name: post-task # executor_kubernetes.py finds this name. not a good idea to change
+    image: "python:3.6"
+    command:
+    - bash
+    - -c
+    - >-
+      while [ ! -f "/tmp/done" ]; do sleep 1; done
+    volumeMounts:
+    - mountPath: {{k8s.workspaceMount}}
+      name: workspace-volume
+  containers:
+  - name: dummy
+    image: "python:3.6"
+    command:
+    - bash
+    - -c
+    - |
+      echo "Done"
+  restartPolicy: Never
+  volumes:
+  - name: workspace-volume
+    emptyDir: {}
