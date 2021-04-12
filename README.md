@@ -12,8 +12,8 @@
 
 # Luna ML: Get your ML models evaluated
 
-![](https://github.com/luna-ml/luna/actions/workflows/test.yml/badge.svg?branch=main)
-[![](https://img.shields.io/badge/license-Apache%202-brightgreen.svg)](https://github.com/luna-ml/luna/blob/main/LICENSE)
+![](https://github.com/luna-ml/luna-ml/actions/workflows/test.yml/badge.svg?branch=main)
+[![](https://img.shields.io/badge/license-Apache%202-brightgreen.svg)](https://github.com/luna-ml/luna-ml/blob/main/LICENSE)
 [![](https://img.shields.io/pypi/v/luna-ml.svg)](https://pypi.org/project/luna-ml)
 
 
@@ -45,4 +45,4 @@ You're welcomed ❤️ to leave questions, feedback and ideas!
  - [Issues](https://github.com/luna-ml/luna-ml/issues) - Feel free to create any questions, discussions, bug report.
  - [Pull requests](https://github.com/luna-ml/luna-ml/pulls) - Contribute to Luna ML client
 
- See [CONTRIBUTING](https://github.com/luna-ml/luna/blob/main/CONTRIBUTING.rst) for code contribution.
+ See [CONTRIBUTING](https://github.com/luna-ml/luna-ml/blob/main/CONTRIBUTING.rst) for code contribution.
