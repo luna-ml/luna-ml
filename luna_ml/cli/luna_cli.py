@@ -8,6 +8,7 @@ import json
 import tempfile
 import shutil
 from colorama import init
+from kubernetes import config
 from luna_ml.repository.repo_reader import RepoReader
 from luna_ml.api.project_yaml import ProjectYaml
 from luna_ml.api.model_yaml import ModelYaml
@@ -88,6 +89,7 @@ class LunaCli(object):
         if dry_run:
             return
         if eval == "local":
+            config.load_kube_config()
             for projectPath, project in projects.items():
                 # projectPath is absolute path
                 lunaYamlPath = f"{projectPath}/{ProjectYaml.FileName}"
