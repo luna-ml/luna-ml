@@ -1,0 +1,5 @@
+py3/
+*.pyc
+*.egg-info/
+_build/
+.vscode/
