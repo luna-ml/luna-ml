@@ -1,0 +1,7 @@
+#!/usr/bin/env python
+
+import fire
+from luna_ml.cli.luna_cli import LunaCli
+
+if __name__ == '__main__':
+    fire.Fire(LunaCli)
