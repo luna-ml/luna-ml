@@ -38,6 +38,11 @@ setuptools.setup(
     ],
     python_requires='>=3.6',
     install_requires=[
+        "fire >= 0.4.0",
+        "colorama >= 0.4.4",
+        "GitPython >= 3.1.14",
+        "PyYAML >= 5.4.1",
+        "requests >= 2.25.1"
     ],
     scripts=[
         'bin/luna-ml'
