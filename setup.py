@@ -42,7 +42,10 @@ setuptools.setup(
         "colorama >= 0.4.4",
         "GitPython >= 3.1.14",
         "PyYAML >= 5.4.1",
-        "requests >= 2.25.1"
+        "requests >= 2.25.1",
+        "kubernetes >= 12.0.1",
+        "base64io >= 1.0.3",
+        "Jinja2 >= 2.11.3"
     ],
     scripts=[
         'bin/luna-ml'

@@ -5,10 +5,14 @@ import fire
 import requests
 import logging
 import json
+import tempfile
+import shutil
 from colorama import init
 from luna_ml.repository.repo_reader import RepoReader
 from luna_ml.api.project_yaml import ProjectYaml
 from luna_ml.api.model_yaml import ModelYaml
+from luna_ml.task.executor import Executor
+from luna_ml.task.task import Task
 
 init()
 from colorama import Fore, Back, Style
@@ -18,6 +22,8 @@ class LunaCli(object):
 
     def __init__(self, server="http://localhost:5000"):
         self._server = server.rstrip("/")
+        self._executor = Executor(basePath=None)
+        self.__next_task_id = 0
 
     def __json_from_response(self, resp):
         return json.loads(resp.text)
@@ -38,7 +44,11 @@ class LunaCli(object):
 
         return None
 
-    def sync(self, local_repo, orig_commit=None, current_commit=None, dry_run=False, eval=True, wait=False):
+    def __get_next_task_id(self):
+        self.__next_task_id = self.__next_task_id + 1
+        return self.__next_task_id
+
+    def sync(self, local_repo, orig_commit=None, current_commit=None, dry_run=False, eval=None, wait=False):
         """Sync local git repository to update leaderboard
 
         sync command take changes of local git repository and update
@@ -53,9 +63,7 @@ class LunaCli(object):
             # sync changes of the local github repo in absolute path
             luna-ml sync /my/repo
         """
-
         dry_run = self.__get_bool_param(dry_run, False)
-        eval = self.__get_bool_param(eval, True)
         wait = self.__get_bool_param(wait, False)
 
         repoPath = os.path.abspath(local_repo).rstrip("/")
@@ -79,6 +87,56 @@ class LunaCli(object):
 
         if dry_run:
             return
+        if eval == "local":
+            for projectPath, project in projects.items():
+                # projectPath is absolute path
+                lunaYamlPath = f"{projectPath}/{ProjectYaml.FileName}"
+                projectPathRelativeToRepoRoot = projectPath[len(repoPath):]
+                modelBasePath = "{}/{}".format(
+                    projectPath,
+                    project["yaml"].modelBasePath.lstrip("/").rstrip("/")
+                )
+
+                for modelPath, model in project["models"].items():
+                    # modelPath is absolute path
+                    modelPathRelativeToModelBase = modelPath[len(modelBasePath):]
+                    if model["action"] == "update":
+                        print("Local evaluation model '{}' ... ".format(model["yaml"].name))
+                        scorer = project["yaml"].scorer
+                        for ev in project["yaml"].evaluators:
+                            print(f"evaluating with {ev.name} ... ", end='')
+                            tmpdir = tempfile.mkdtemp()
+
+                            # prepare project dir without models
+                            shutil.copytree(
+                                projectPath,
+                                f"{tmpdir}/project",
+                                ignore=lambda directory, contents: ['models'] if directory == projectPath else []
+                            )
+
+                            task = Task(
+                                taskId=self.__get_next_task_id(),
+                                image=[ev.image, scorer.image],
+                                command=[ev.command, scorer.command],
+                                copyToContainerBeforeStart=[
+                                    (modelPath, "/workspace/model"),
+                                    (f"{tmpdir}/project", "/workspace")
+                                ],
+                                copyFromContainerAfterFinish=[
+                                    ("/workspace/eval", f"{tmpdir}/eval"),
+                                    ("/workspace/score", f"{tmpdir}/score")
+                                ]
+                            )
+
+                            ret = self._executor.evaluate(task)
+                            if ret != 0:
+                                print(f"evaluation failed {ev.name} with exit code {ret}")
+                                sys.exit(ret)
+
+                            shutil.rmtree(tmpdir)
+                            print("done")
+            return
+
 
         if not "REPO_TYPE" in os.environ:
             logging.error("REPO_TYPE environment is not defined. REPO_TYPE is something like 'github.com'")
