@@ -33,9 +33,9 @@ Luna ML is designed with MLOps in mind. Defining projects, evaluation environmen
 
 | Project | Description |
 | ------ | --------- |
+| [luna-ml](https://github.com/luna-ml/luna-ml) | Luna ML Client - The current repository |
 | [luna-action](https://github.com/luna-ml/luna-action) | Luna ML Github action to automate Pull request review and submit on merge |
 | [luna-project-template](https://github.com/luna-ml/luna-project-template) | Template for creating new Github repository for Luna ML Projects |
-| [luna-ml](https://github.com/luna-ml/luna-ml) | Luna ML Client and document. - Current repository |
 
 ## Getting involved
 
@@ -43,7 +43,6 @@ You're welcomed ❤️ to leave questions, feedback and ideas!
 
  - [Discord channel](https://discord.com/channels/829867188092796968/829867188092796973) - [Invite link](https://discord.gg/QvPkuNsSFK)
  - [Issues](https://github.com/luna-ml/luna-ml/issues) - Feel free to create any questions, discussions, bug report.
- - [Pull requests](https://github.com/luna-ml/luna-ml/pulls) - Contribute client code and documentation.
+ - [Pull requests](https://github.com/luna-ml/luna-ml/pulls) - Contribute to Luna ML client
 
  See [CONTRIBUTING](https://github.com/luna-ml/luna/blob/main/CONTRIBUTING.rst) for code contribution.
-
