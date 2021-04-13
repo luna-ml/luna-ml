@@ -17,7 +17,7 @@
 [![](https://img.shields.io/pypi/v/luna-ml.svg)](https://pypi.org/project/luna-ml)
 
 
-Luna ML provides ML model evaluation environment and display evaluation results as well as leaderboard when models are submitted. It works with any ML frameworks you uses and any evaluation criteria you defines.
+Luna ML provides an ML model evaluation environment and displays evaluation results as well as a leaderboard when models are submitted. It works with any ML frameworks you use and any evaluation criteria you define.
 
 <a href="https://luna.staroid.com"><img src="https://luna-ml.github.io/luna/_images/luna-ml_screenshot.png?" width="500"></a>
 
